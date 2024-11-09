@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tool Storefront</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .container { max-width: 600px; margin: auto; }
+        button { margin: 10px 0; padding: 10px 20px; font-size: 16px; }
+        .output { margin-top: 20px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tool Storefront</h1>
+        <button onclick="browseTools()">Browse Tools</button>
+        <button onclick="assignTool()">Assign Tool</button>
+        <button onclick="onboardApp()">Onboard App</button>
+        <button onclick="manageSecrets()">Manage Secrets</button>
+        <button onclick="auditLog()">Audit Log</button>
+        <div id="output" class="output"></div>
+    </div>
+
+    <script>
+        const apiBaseUrl = "https://90j41h315.execute-api.us-east-1.amazonaws.com/dev"; // Replace with your API Gateway URL
+
+        async function browseTools() {
+            const response = await fetch(`${apiBaseUrl}/browseTools`);
+            const data = await response.json();
+            document.getElementById("output").textContent = `Available Tools: ${data.tools.join(", ")}`;
+        }
+
+        async function assignTool() {
+            const response = await fetch(`${apiBaseUrl}/assignTool`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ application_type: "internal", security_level: "high" })
+            });
+            const data = await response.json();
+            document.getElementById("output").textContent = `Assigned Tool: ${data.assigned_tool}`;
+        }
+
+        async function onboardApp() {
+            const response = await fetch(`${apiBaseUrl}/onboardApp`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ app_name: "myApp", secret_name: "myAppSecret", secret_value: "secret123" })
+            });
+            const data = await response.json();
+            document.getElementById("output").textContent = data.message;
+        }
+
+        async function manageSecrets() {
+            const response = await fetch(`${apiBaseUrl}/manageSecrets`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ action: "update", secret_name: "myAppSecret", new_value: "newSecret123" })
+            });
+            const data = await response.json();
+            document.getElementById("output").textContent = data.message;
+        }
+
+        async function auditLog() {
+            const response = await fetch(`${apiBaseUrl}/auditLog`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ user: "user1", action: "onboardApp", details: "Created new secret" })
+            });
+            const data = await response.json();
+            document.getElementById("output").textContent = data.message;
+        }
+    </script>
+</body>
+</html>
