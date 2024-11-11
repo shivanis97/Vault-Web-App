@@ -1,0 +1,29 @@
+{
+"function": {
+    "assignTool": {
+        "service": "Lambda",
+        "providerPlugin": "awscloudformation",
+        "build": true
+    },
+    "onboardApp": {
+        "service": "Lambda",
+        "providerPlugin": "awscloudformation",
+        "build": true
+    },
+    "auditLog": {
+        "service": "Lambda",
+        "providerPlugin": "awscloudformation",
+        "build": true
+    },
+    "manageSecrets": {
+        "service": "Lambda",
+        "providerPlugin": "awscloudformation",
+        "build": true
+    },
+    "browseTools": {
+        "service": "Lambda",
+        "providerPlugin": "awscloudformation",
+        "build": true
+    }
+}
+}{}
